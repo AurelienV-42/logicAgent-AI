@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ae361c56-7fce-43e6-a40f-d902a69c8a7a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Agent/Player.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Environment/Forest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1ktHExUzPWoRRupKCJD3l2sPHlN" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="restartRequiresConfirmation" value="false" />
+  </component>
+  <component name="RunManager" selected="Application.Forest">
+    <configuration name="Forest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Environment.Forest" />
+      <module name="logicAgent-AI" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="14" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Forest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ae361c56-7fce-43e6-a40f-d902a69c8a7a" name="Default Changelist" comment="" />
+      <created>1606512859698</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1606512859698</updated>
+      <workItem from="1606512860947" duration="6000" />
+      <workItem from="1606755159850" duration="89000" />
+      <workItem from="1607094620219" duration="103000" />
+      <workItem from="1607094736096" duration="172000" />
+      <workItem from="1607094921239" duration="111000" />
+      <workItem from="1607095046134" duration="94000" />
+      <workItem from="1607095157915" duration="1859000" />
+      <workItem from="1607097089811" duration="2466000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="328" y="103" key="#Project_Structure" timestamp="1607095136083">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="328" y="103" key="#Project_Structure/0.0.1680.1050@0.0.1680.1050" timestamp="1607095136083" />
+    <state x="304" y="184" width="1071" height="754" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607095117704">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="304" y="184" width="1071" height="754" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1607095117704" />
+    <state x="573" y="322" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1607094654577">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="573" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1607094654577" />
+    <state width="1638" height="290" key="GridCell.Tab.0.bottom" timestamp="1607099383924">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="290" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1607099383924" />
+    <state width="1638" height="290" key="GridCell.Tab.0.center" timestamp="1607099383923">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="290" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1607099383923" />
+    <state width="1638" height="290" key="GridCell.Tab.0.left" timestamp="1607099383922">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="290" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1607099383922" />
+    <state width="1638" height="290" key="GridCell.Tab.0.right" timestamp="1607099383923">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="290" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1607099383923" />
+    <state x="328" y="103" key="SettingsEditor" timestamp="1607095165791">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="328" y="103" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1607095165791" />
+    <state x="475" y="99" key="new project wizard" timestamp="1607094969367">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="475" y="99" key="new project wizard/0.0.1680.1050@0.0.1680.1050" timestamp="1607094969367" />
+    <state x="608" y="282" key="refactoring.ChangeSignatureDialog" timestamp="1607095792384">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="608" y="282" key="refactoring.ChangeSignatureDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1607095792384" />
+  </component>
+</project>
