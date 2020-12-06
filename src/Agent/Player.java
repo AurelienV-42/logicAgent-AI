@@ -3,7 +3,7 @@ package Agent;
 import java.util.ArrayList;
 
 public class Player {
-    public enum Effector {Top, Bottom, Right, Left, Shoot, Leave}
+    public enum Effector {Top, Bottom, Right, Left, ShootTop, ShootBottom, ShootRight, ShootLeft, Leave}
 
     public Player() {}
 
