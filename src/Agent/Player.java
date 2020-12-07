@@ -8,19 +8,26 @@ import java.util.ArrayList;
 public class Player {
     public enum Effector {Top, Bottom, Right, Left, Shoot, Leave}
 
-    public Player() {}
+    public Player() {
+    }
 
     private PairEffector choiceWithProba(ArrayList<Environment.Forest.State> states) {
         if (states.contains(Forest.State.Portal))
             return new PairEffector(Effector.Leave);
-        return new PairEffector(Effector.Shoot, Effector.Right);
+        return new PairEffector(Effector.Right);
     }
 
     public PairEffector play(ArrayList<Environment.Forest.State> states) {
-        PairEffector returnValue;
         System.out.println("[Player] I receive: " + states);
+
+        PairEffector returnValue;
+
         returnValue = choiceWithProba(states);
-        System.out.println("[Player] I play: " + returnValue.effector + " " + returnValue.direction);
+
+        if (returnValue.direction == null)
+            System.out.println("[Player] I play: " + returnValue.effector);
+        else
+            System.out.println("[Player] I play: " + returnValue.effector + " " + returnValue.direction);
         return returnValue;
     }
 

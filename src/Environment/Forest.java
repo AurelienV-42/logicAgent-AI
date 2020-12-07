@@ -34,33 +34,18 @@ public class Forest {
                     if (x == 0 && y == 0)
                         states.add(State.Character);
                     else {
-                        double rand = Math.random();
-
-                        if (rand <= 0.25) {
-                            states.add(State.Rift);
-                        } else if (rand > 0.25 && rand <= 0.5) {
-                            states.add(State.Monster);
-                        } else if (rand > 0.5 && rand <= 0.75 && !portal) {
-                            states.add(State.Portal);
+                        State state = chooseAState(portal);
+                        if (state == State.Portal)
                             portal = true;
-                        }
+                        if (state != null)
+                            states.add(state);
                     }
                     row.add(states);
                 }
                 map.add(row);
             }
         }
-        for (int x = 0; x < map.size(); x++) {
-            for (int y = 0; y < map.get(x).size(); y++) {
-                if (map.get(x).get(y).contains(State.Rift))
-                    fillAroundWith(State.Wind, x, y);
-                if (map.get(x).get(y).contains(State.Monster))
-                    fillAroundWith(State.Smell, x, y);
-                if (map.get(x).get(y).contains(State.Portal))
-                    fillAroundWith(State.Light, x, y);
-
-            }
-        }
+        addSideEffects();
         displayMap();
     }
 
@@ -79,6 +64,33 @@ public class Forest {
             displayMap();
         }
         System.out.println("You did a mistake... :(");
+    }
+
+    private State chooseAState(boolean portal) {
+        double rand = Math.random();
+
+        if (rand <= 0.25) {
+            return State.Rift;
+        } else if (rand > 0.25 && rand <= 0.5) {
+            return State.Monster;
+        } else if (rand > 0.5 && rand <= 0.75 && !portal) {
+            return State.Portal;
+        }
+        return null;
+    }
+
+    private void addSideEffects() {
+        for (int x = 0; x < map.size(); x++) {
+            for (int y = 0; y < map.get(x).size(); y++) {
+                if (map.get(x).get(y).contains(State.Rift))
+                    fillAroundWith(State.Wind, x, y);
+                if (map.get(x).get(y).contains(State.Monster))
+                    fillAroundWith(State.Smell, x, y);
+                if (map.get(x).get(y).contains(State.Portal))
+                    fillAroundWith(State.Light, x, y);
+
+            }
+        }
     }
 
     private Pair getWherePlayerIs() {
@@ -136,6 +148,7 @@ public class Forest {
     }
 
     private void fillAroundWith(State state, int x, int y) {
+        System.out.println("Fill around with: " + x + " " + y);
         if (x - 1 > -1 && !map.get(x - 1).get(y).contains(state))
             map.get(x - 1).get(y).add(state);
         if (y - 1 > -1 && !map.get(x).get(y - 1).contains(state))
@@ -157,6 +170,10 @@ public class Forest {
             map.get(x).get(y + 1).remove(state);
     }
 
+    private void addOrDeleteElement(State state, int x, int y) {
+        addOrDeleteElement(state, x, y, false);
+    }
+
     private void addOrDeleteElement(State state, int x, int y, boolean remove) {
         if (remove)
             map.get(x).get(y).remove(state);
@@ -172,30 +189,59 @@ public class Forest {
             case Top -> {
                 if (x - 1 < 0)
                     return true;
-                addOrDeleteElement(State.Character, x - 1, y, false);
+                addOrDeleteElement(State.Character, x - 1, y);
             }
             case Bottom -> {
                 if (x + 1 >= map.size())
                     return true;
-                addOrDeleteElement(State.Character, x + 1, y, false);
+                addOrDeleteElement(State.Character, x + 1, y);
             }
             case Right -> {
                 if (y + 1 >= map.size())
                     return true;
-                addOrDeleteElement(State.Character, x, y + 1, false);
+                addOrDeleteElement(State.Character, x, y + 1);
             }
             case Left -> {
                 if (y - 1 < 0)
                     return true;
-                addOrDeleteElement(State.Character, x, y - 1, false);
+                addOrDeleteElement(State.Character, x, y - 1);
             }
         }
         addOrDeleteElement(State.Character, x, y, true);
         return false;
     }
 
-    private void upgradeMap() {
-        // TODO
+    private void upgradeMap(Pair coords) {
+        System.out.println("[Forest] Portal Reached!");
+        ArrayList<ArrayList<State>> lastLine = new ArrayList<>();
+        boolean portal = false;
+
+        for (int x = 0; x < map.size(); x++) {
+            ArrayList<State> lastCell = new ArrayList<>();
+            State state = chooseAState(portal);
+
+            if (state == State.Portal)
+                portal = true;
+            if (state != null)
+                lastCell.add(state);
+            map.get(x).add(lastCell);
+        }
+        do {
+            for (int x = 0; x < map.size() + 1; x++) {
+                ArrayList<State> lastCell = new ArrayList<>();
+                State state = chooseAState(portal);
+
+                if (state == State.Portal)
+                    portal = true;
+                if (state != null)
+                    lastCell.add(state);
+                lastLine.add(lastCell);
+            }
+        } while (!portal);
+        map.add(lastLine);
+        addOrDeleteElement(State.Portal, coords.x, coords.y, true);
+        removeAroundWith(State.Light, coords.x, coords.y);
+        addSideEffects();
     }
 
     private boolean updateTheMap(PairEffector thePlay, Pair coords) {
@@ -204,7 +250,7 @@ public class Forest {
                 return ShootTo(thePlay, coords);
             case Leave:
                 if (map.get(coords.x).get(coords.y).contains(State.Portal)) {
-                    upgradeMap();
+                    upgradeMap(coords);
                     return false;
                 }
             default:
