@@ -1,21 +1,26 @@
 package Agent;
 
+import Environment.Forest;
+import utils.PairEffector;
+
 import java.util.ArrayList;
 
 public class Player {
-    public enum Effector {Top, Bottom, Right, Left, ShootTop, ShootBottom, ShootRight, ShootLeft, Leave}
+    public enum Effector {Top, Bottom, Right, Left, Shoot, Leave}
 
     public Player() {}
 
-    private Effector choiceWithProba(ArrayList<Environment.Forest.State> states) {
-        return Effector.Top;
+    private PairEffector choiceWithProba(ArrayList<Environment.Forest.State> states) {
+        if (states.contains(Forest.State.Portal))
+            return new PairEffector(Effector.Leave);
+        return new PairEffector(Effector.Shoot, Effector.Right);
     }
 
-    public Effector play(ArrayList<Environment.Forest.State> states) {
-        Effector returnValue;
-        System.out.println("I will play for you... I receive this: " + states);
+    public PairEffector play(ArrayList<Environment.Forest.State> states) {
+        PairEffector returnValue;
+        System.out.println("[Player] I receive: " + states);
         returnValue = choiceWithProba(states);
-        System.out.println("Hmm... I'm going to play that: " + returnValue);
+        System.out.println("[Player] I play: " + returnValue.effector + " " + returnValue.direction);
         return returnValue;
     }
 

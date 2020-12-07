@@ -2,8 +2,10 @@ package Environment;
 
 import Agent.Player;
 import utils.Pair;
+import utils.PairEffector;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Forest {
@@ -71,11 +73,12 @@ public class Forest {
 
             System.out.print("Press enter to continue");
             input.nextLine();
-            Player.Effector thePlay = player.play(map.get(coords.x).get(coords.y));
+            PairEffector thePlay = player.play(map.get(Objects.requireNonNull(coords).x).get(coords.y));
             lose = updateTheMap(thePlay, coords);
             System.out.println();
             displayMap();
         }
+        System.out.println("You did a mistake... :(");
     }
 
     private Pair getWherePlayerIs() {
@@ -88,35 +91,48 @@ public class Forest {
         return null;
     }
 
-    private boolean ShootTo(Player.Effector direction, Pair coords) {
-        int x = coords.x;
-        int y = coords.y;
-
-        switch (direction) {
-            case ShootTop:
-                x--;
-                if (x < 0 || !getStates(x, y).contains(State.Monster))
-                    return true;
-            case ShootBottom:
-                x++;
-                if (x > map.size() || !getStates(x, y).contains(State.Monster))
-                    return true;
-            case ShootRight:
-                y++;
-                if (y > map.size() || !getStates(x, y).contains(State.Monster))
-                    return true;
-            case ShootLeft:
-                y = y - 1;
-                if (y < 0 || !getStates(x, y).contains(State.Monster))
-                    return true;
-        }
-        addOrDeleteElement(State.Monster, x, y, false);
-        removeAroundWith(State.Smell, x, y);
-        return false;
-    }
-
     private ArrayList<State> getStates(int x, int y) {
         return map.get(x).get(y);
+    }
+
+    private boolean ShootTo(PairEffector effectors, Pair coords) {
+        int x = coords.x;
+        int y = coords.y;
+        boolean monster = true;
+
+        if (effectors.direction == null) {
+            System.err.println("You have to give a direction to shoot");
+            return true;
+        }
+        switch (effectors.direction) {
+            case Top -> {
+                x--;
+                if (x < 0 || !getStates(x, y).contains(State.Monster))
+                    monster = false;
+            }
+            case Bottom -> {
+                x++;
+                if (x > map.size() || !getStates(x, y).contains(State.Monster))
+                    monster = false;
+            }
+            case Right -> {
+                y++;
+                if (y > map.size() || !getStates(x, y).contains(State.Monster))
+                    monster = false;
+            }
+            case Left -> {
+                y = y - 1;
+                if (y < 0 || !getStates(x, y).contains(State.Monster))
+                    monster = false;
+            }
+        }
+        if (monster) {
+            addOrDeleteElement(State.Monster, x, y, true);
+            removeAroundWith(State.Smell, x, y);
+        } else {
+            System.err.println("There isn't any monster in x: " + x + " y: " + y);
+        }
+        return false;
     }
 
     private void fillAroundWith(State state, int x, int y) {
@@ -131,13 +147,13 @@ public class Forest {
     }
 
     private void removeAroundWith(State state, int x, int y) {
-        if (x - 1 > -1 && map.get(x - 1).get(y).contains(state))
+        if (x - 1 > -1)
             map.get(x - 1).get(y).remove(state);
-        if (y - 1 > -1 && map.get(x).get(y - 1).contains(state))
+        if (y - 1 > -1)
             map.get(x).get(y - 1).remove(state);
-        if (x + 1 < map.size() && map.get(x + 1).get(y).contains(state))
+        if (x + 1 < map.size())
             map.get(x + 1).get(y).remove(state);
-        if (y + 1 < map.size() && map.get(x).get(y + 1).contains(state))
+        if (y + 1 < map.size())
             map.get(x).get(y + 1).remove(state);
     }
 
@@ -153,22 +169,26 @@ public class Forest {
         int y = coords.y;
 
         switch (direction) {
-            case Top:
+            case Top -> {
                 if (x - 1 < 0)
                     return true;
                 addOrDeleteElement(State.Character, x - 1, y, false);
-            case Bottom:
-                if (x + 1 > map.size())
+            }
+            case Bottom -> {
+                if (x + 1 >= map.size())
                     return true;
-                addOrDeleteElement(State.Character, x - 1, y, false);
-            case Right:
-                if (y + 1 > map.size())
+                addOrDeleteElement(State.Character, x + 1, y, false);
+            }
+            case Right -> {
+                if (y + 1 >= map.size())
                     return true;
-                addOrDeleteElement(State.Character, x - 1, y, false);
-            case Left:
+                addOrDeleteElement(State.Character, x, y + 1, false);
+            }
+            case Left -> {
                 if (y - 1 < 0)
                     return true;
-                addOrDeleteElement(State.Character, x - 1, y, false);
+                addOrDeleteElement(State.Character, x, y - 1, false);
+            }
         }
         addOrDeleteElement(State.Character, x, y, true);
         return false;
@@ -178,9 +198,9 @@ public class Forest {
         // TODO
     }
 
-    private boolean updateTheMap(Player.Effector thePlay, Pair coords) {
-        switch (thePlay) {
-            case ShootTop, ShootBottom, ShootLeft, ShootRight:
+    private boolean updateTheMap(PairEffector thePlay, Pair coords) {
+        switch (thePlay.effector) {
+            case Shoot:
                 return ShootTo(thePlay, coords);
             case Leave:
                 if (map.get(coords.x).get(coords.y).contains(State.Portal)) {
@@ -188,7 +208,7 @@ public class Forest {
                     return false;
                 }
             default:
-                return travel(thePlay, coords);
+                return travel(thePlay.effector, coords);
         }
     }
 
