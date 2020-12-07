@@ -23,29 +23,7 @@ public class Forest {
         input = new Scanner(System.in);  // Create a Scanner object
 
         System.out.println("Adding Monster, Rift and a beautiful portal in the forest...\n");
-        boolean portal = false;
-
-        while (!portal) {
-            map = new ArrayList<>();
-            for (int x = 0; x < 3; x++) {
-                ArrayList<ArrayList<State>> row = new ArrayList<>();
-                for (int y = 0; y < 3; y++) {
-                    ArrayList<State> states = new ArrayList<>();
-                    if (x == 0 && y == 0)
-                        states.add(State.Character);
-                    else {
-                        State state = chooseAState(portal);
-                        if (state == State.Portal)
-                            portal = true;
-                        if (state != null)
-                            states.add(state);
-                    }
-                    row.add(states);
-                }
-                map.add(row);
-            }
-        }
-        addSideEffects();
+        generateMap(3);
         displayMap();
     }
 
@@ -64,6 +42,32 @@ public class Forest {
             displayMap();
         }
         System.out.println("You did a mistake... :(");
+    }
+
+    private void generateMap(int size) {
+        boolean portal = false;
+
+        while (!portal) {
+            map = new ArrayList<>();
+            for (int x = 0; x < size; x++) {
+                ArrayList<ArrayList<State>> row = new ArrayList<>();
+                for (int y = 0; y < size; y++) {
+                    ArrayList<State> states = new ArrayList<>();
+                    if (x == 0 && y == 0)
+                        states.add(State.Character);
+                    else {
+                        State state = chooseAState(portal);
+                        if (state == State.Portal)
+                            portal = true;
+                        if (state != null)
+                            states.add(state);
+                    }
+                    row.add(states);
+                }
+                map.add(row);
+            }
+        }
+        addSideEffects();
     }
 
     private State chooseAState(boolean portal) {
@@ -107,7 +111,7 @@ public class Forest {
         return map.get(x).get(y);
     }
 
-    private boolean ShootTo(PairEffector effectors, Pair coords) {
+    private boolean shootTo(PairEffector effectors, Pair coords) {
         int x = coords.x;
         int y = coords.y;
         boolean monster = true;
@@ -148,7 +152,6 @@ public class Forest {
     }
 
     private void fillAroundWith(State state, int x, int y) {
-        System.out.println("Fill around with: " + x + " " + y);
         if (x - 1 > -1 && !map.get(x - 1).get(y).contains(state))
             map.get(x - 1).get(y).add(state);
         if (y - 1 > -1 && !map.get(x).get(y - 1).contains(state))
@@ -211,46 +214,18 @@ public class Forest {
         return false;
     }
 
-    private void upgradeMap(Pair coords) {
+    private void upgradeMap() {
         System.out.println("[Forest] Portal Reached!");
-        ArrayList<ArrayList<State>> lastLine = new ArrayList<>();
-        boolean portal = false;
-
-        for (int x = 0; x < map.size(); x++) {
-            ArrayList<State> lastCell = new ArrayList<>();
-            State state = chooseAState(portal);
-
-            if (state == State.Portal)
-                portal = true;
-            if (state != null)
-                lastCell.add(state);
-            map.get(x).add(lastCell);
-        }
-        do {
-            for (int x = 0; x < map.size() + 1; x++) {
-                ArrayList<State> lastCell = new ArrayList<>();
-                State state = chooseAState(portal);
-
-                if (state == State.Portal)
-                    portal = true;
-                if (state != null)
-                    lastCell.add(state);
-                lastLine.add(lastCell);
-            }
-        } while (!portal);
-        map.add(lastLine);
-        addOrDeleteElement(State.Portal, coords.x, coords.y, true);
-        removeAroundWith(State.Light, coords.x, coords.y);
-        addSideEffects();
+        generateMap(map.size() + 1);
     }
 
     private boolean updateTheMap(PairEffector thePlay, Pair coords) {
         switch (thePlay.effector) {
             case Shoot:
-                return ShootTo(thePlay, coords);
+                return shootTo(thePlay, coords);
             case Leave:
                 if (map.get(coords.x).get(coords.y).contains(State.Portal)) {
-                    upgradeMap(coords);
+                    upgradeMap();
                     return false;
                 }
             default:

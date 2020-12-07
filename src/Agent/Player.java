@@ -14,6 +14,11 @@ public class Player {
     private PairEffector choiceWithProba(ArrayList<Environment.Forest.State> states) {
         if (states.contains(Forest.State.Portal))
             return new PairEffector(Effector.Leave);
+        //TODO
+        // • Chaque sortie trouvée : +10 * nombre de cases
+        // • Mort : -10 * nombre de cases
+        // • Mouvement : -1
+        // • Utilisation de roches : -10
         return new PairEffector(Effector.Right);
     }
 
@@ -30,9 +35,4 @@ public class Player {
             System.out.println("[Player] I play: " + returnValue.effector + " " + returnValue.direction);
         return returnValue;
     }
-
-// • Chaque sortie trouvée : +10 * nombre de cases
-// • Mort : -10 * nombre de cases
-// • Mouvement : -1
-// • Utilisation de roches : -10
 }
