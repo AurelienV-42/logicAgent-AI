@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Forest {
-    public enum State {Character, Smell, Wind, Light, Monster, Portal, Rift, Clear}
+    public enum State {Character, Smell, Wind, Light, Monster, Portal, Rift, Clear} // TODO Supprimer Clear
 
     Scanner input;
     private ArrayList<ArrayList<ArrayList<State>>> map;
@@ -34,15 +34,26 @@ public class Forest {
 
         while (!lose) {
             Pair coords = getWherePlayerIs();
+            ArrayList<Player.Effector> wherePlayerCanGo = getWherePlayerCanGo();
 
             System.out.print("Press enter to continue");
             input.nextLine();
-            PairEffector thePlay = player.play(map.get(Objects.requireNonNull(coords).x).get(coords.y));
+
+            PairEffector thePlay = player.play(map.get(Objects.requireNonNull(coords).x).get(coords.y), wherePlayerCanGo);
             lose = updateTheMap(thePlay, coords);
             System.out.println();
             displayMap();
         }
         System.out.println("You did a mistake... :(");
+    }
+
+    private ArrayList<Player.Effector> getWherePlayerCanGo() {
+        ArrayList<Player.Effector> result = new ArrayList<>();
+        result.add(Player.Effector.Top);
+        result.add(Player.Effector.Bottom);
+        result.add(Player.Effector.Right);
+        result.add(Player.Effector.Left);
+        return result;
     }
 
     private void generateMap(int size) {

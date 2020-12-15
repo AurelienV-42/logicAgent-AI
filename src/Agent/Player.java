@@ -1,10 +1,8 @@
 package Agent;
 
 import Environment.Forest;
-import utils.Pair;
 import utils.PairEffector;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,20 +10,21 @@ import java.util.Map;
 public class Player {
 
     public enum Effector {Top, Bottom, Right, Left, Shoot, Leave, Death}
-    private Map<Effector, Integer> agentMeasurement;
-    private Map<Forest.State, Effector> eventMeasurement;
-    private Map<String, Effector> directions;
+
+    private final Map<Effector, Integer> agentMeasurement;
+    private final Map<Forest.State, Effector> eventMeasurement;
+    private final Map<String, Effector> directions;
     final private Map<Forest.State, Forest.State> basicKnowledge;
-    private Map<String, Forest.State> volatileKnowledge;
-    private ArrayList<Forest.State> events;
-    private ArrayList<Forest.State> effects;
+    private final Map<String, Forest.State> volatileKnowledge;
+    private final ArrayList<Forest.State> events;
+    private final ArrayList<Forest.State> effects;
     private int numberOfStates = 0;
     private PairEffector choiceDir;
     private Forest.State choiceStateAssumption;
     private int performanceScore = 0;
-    private boolean hasMoved = true;
+    private final boolean hasMoved = true;
 
-    private int ScoreDePerformance = 0;
+    private final int ScoreDePerformance = 0;
     // KnowledgeVariable
 
     public Player() {
@@ -61,7 +60,6 @@ public class Player {
     }
 
     private void performanceMeasurement(PairEffector choice) {
-
         for (Effector measure : this.agentMeasurement.keySet()) {
             if (choice.effector == measure) {
                 this.performanceScore += this.agentMeasurement.get(measure);
@@ -69,22 +67,26 @@ public class Player {
         }
     }
 
-    private void buildKnowledge(ArrayList<Environment.Forest.State> states) {
+    private void displayProbas() {
+        for (String key : this.volatileKnowledge.keySet()) {
+            System.out.println("Direction : " + key + " Assumption : " + this.volatileKnowledge.get(key));
+        }
+        System.out.println("\n\n");
+    }
 
-        if (this.hasMoved == true) {
-            this.events.clear();
-            this.effects.clear();
-            for (Forest.State state : states) {
-                for (Forest.State fact : this.basicKnowledge.keySet()) {
-                    if (state == fact) {
-                        effects.add(state);
-                    } else if (state == this.basicKnowledge.get(fact)) {
-                        events.add(state);
-                    }
+    private void buildKnowledge(ArrayList<Environment.Forest.State> states) {
+        this.events.clear();
+        this.effects.clear();
+        for (Forest.State state : states) {
+            for (Forest.State fact : this.basicKnowledge.keySet()) {
+                if (state == fact) {
+                    effects.add(state);
+                } else if (state == this.basicKnowledge.get(fact)) {
+                    events.add(state);
                 }
             }
-            this.numberOfStates = events.size() + effects.size();
         }
+        this.numberOfStates = events.size() + effects.size();
     }
 
     private void updateKnowledge() {
@@ -96,10 +98,9 @@ public class Player {
                 }
             }
         }
-    }
+    } // TODO Maybe on n'en a pas besoin
 
     private PairEffector checkEvents() {
-
         if (this.events.size() > 0) {
             for (Forest.State event : this.events) {
                 for (Forest.State ref : this.eventMeasurement.keySet()) {
@@ -110,11 +111,9 @@ public class Player {
             }
         }
         return null;
-    }
+    } // Permet de savoir s'il y a un event sur la case.
 
     private PairEffector checkEffects(ArrayList<Environment.Forest.State> states) {
-
-        int effectIdx = 0;
         int paths = 2; // Number of possible paths min 2 max 4
         PairEffector choice = null;
 
@@ -131,13 +130,11 @@ public class Player {
         } else if (this.effects.size() == 3) {
             // Check for Smell, Light, Wind effects
         }
-
         displayProbas();
         return choice;
     }
 
     private PairEffector filterRules(ArrayList<Environment.Forest.State> states) {
-
         PairEffector event = checkEvents();
 
         if (event != null) {
@@ -147,38 +144,19 @@ public class Player {
         }
     }
 
-    private void displayProbas() {
-        for (String key : this.volatileKnowledge.keySet()) {
-            System.out.println("Direction : " + key + " Assumption : " + this.volatileKnowledge.get(key));
-        }
-        System.out.println("\n\n");
-    }
-
     private PairEffector inferenceEngine(ArrayList<Environment.Forest.State> states) {
-
         buildKnowledge(states);
         updateKnowledge();
         return filterRules(states);
     }
 
     private PairEffector choiceWithProba(ArrayList<Environment.Forest.State> states) {
-
         PairEffector choice = inferenceEngine(states);
-        this.choiceDir = choice;
-        if (choice.direction == null) {
-            this.hasMoved = true;
-            System.out.println("Moved");
-        } else {
-            System.out.println("Not moved");
-            this.hasMoved = false;
-        }
-        System.out.println("Effector : " + choice.effector);
-
         performanceMeasurement(this.choiceDir);
         return choice;
     }
 
-    public PairEffector play(ArrayList<Environment.Forest.State> states) {
+    public PairEffector play(ArrayList<Forest.State> states, ArrayList<Effector> wherePlayerCanGo) {
         System.out.println("[Player] I receive: " + states);
 
         PairEffector returnValue;
