@@ -1,6 +1,7 @@
 package Environment;
 
 import Agent.Player;
+import com.sun.jdi.event.StepEvent;
 import utils.Pair;
 import utils.PairEffector;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Forest {
-    public enum State {Character, Smell, Wind, Light, Monster, Portal, Rift}
+    public enum State {Character, Smell, Wind, Light, Monster, Portal, Rift, Clear}
 
     Scanner input;
     private ArrayList<ArrayList<ArrayList<State>>> map;
@@ -92,7 +93,6 @@ public class Forest {
                     fillAroundWith(State.Smell, x, y);
                 if (map.get(x).get(y).contains(State.Portal))
                     fillAroundWith(State.Light, x, y);
-
             }
         }
     }
