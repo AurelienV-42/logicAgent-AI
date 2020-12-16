@@ -13,27 +13,20 @@ public class Player {
 
     private final Map<Effector, Integer> agentMeasurement;
     private final Map<Forest.State, Effector> eventMeasurement;
-    private final Map<String, Effector> directions;
     final private Map<Forest.State, Forest.State> basicKnowledge;
     private final ArrayList<Forest.State> events;
     private final ArrayList<Forest.State> effects;
-    private int numberOfStates = 0;
-    private PairEffector choiceDir;
-    private Forest.State choiceStateAssumption;
     private int performanceScore = 0;
     private int iteration = 0;
     private int totalScore = 0;
-    private int averagePerf = 0;
-    private final boolean hasMoved = true;
-    private ArrayList<Effector> shot;
+    private final ArrayList<Effector> shot;
 
-    private final int ScoreDePerformance = 0;
     // KnowledgeVariable
 
     public Player() {
         this.agentMeasurement = new HashMap<>();
         this.eventMeasurement = new HashMap<>();
-        this.directions = new HashMap<>();
+        Map<String, Effector> directions = new HashMap<>();
         this.basicKnowledge = new HashMap<>();
         this.events = new ArrayList<>();
         this.effects = new ArrayList<>();
@@ -49,10 +42,10 @@ public class Player {
         this.eventMeasurement.put(Forest.State.Rift, Effector.Death);
         this.eventMeasurement.put(Forest.State.Portal, Effector.Leave);
 
-        this.directions.put("A", Effector.Top);
-        this.directions.put("B", Effector.Right);
-        this.directions.put("C", Effector.Bottom);
-        this.directions.put("D", Effector.Left);
+        directions.put("A", Effector.Top);
+        directions.put("B", Effector.Right);
+        directions.put("C", Effector.Bottom);
+        directions.put("D", Effector.Left);
 
         this.basicKnowledge.put(Forest.State.Smell, Forest.State.Monster);
         this.basicKnowledge.put(Forest.State.Light, Forest.State.Portal);
@@ -66,14 +59,14 @@ public class Player {
                 this.performanceScore += this.agentMeasurement.get(measure);
                 this.totalScore += this.agentMeasurement.get(measure);
                 this.iteration++;
-                this.averagePerf = this.totalScore / this.iteration;
+                int averagePerf = this.totalScore / this.iteration;
                 if (choice.effector == Effector.Leave) {
                     System.out.println("Score de performance pour cet environnement : " + this.performanceScore);
-                    System.out.println("Score moyen de performance : " + this.averagePerf);
+                    System.out.println("Score moyen de performance : " + averagePerf);
                     this.performanceScore = 0;
                 } else if (choice.effector == Effector.Death) {
                     System.out.println("Score de performance pour cet environnement : " + this.performanceScore);
-                    System.out.println("Score moyen de performance : " + this.averagePerf);
+                    System.out.println("Score moyen de performance : " + averagePerf);
                     System.out.println("Score total de performance : " + this.totalScore);
                     System.out.println("Nombre d'itérations : " + this.iteration);
                 }
@@ -93,7 +86,6 @@ public class Player {
                 }
             }
         }
-        this.numberOfStates = events.size() + effects.size();
     }
 
     private PairEffector checkEvents() {
@@ -109,13 +101,11 @@ public class Player {
         return null;
     } // Permet de savoir s'il y a un event sur la case.
 
-    private PairEffector checkEffects(ArrayList<Environment.Forest.State> states, ArrayList<Effector> wherePlayerCanGo) {
-
-        for (Effector dir : wherePlayerCanGo) {
-            System.out.println("Dir : " + dir);
-        }
-        int rand = (int)(Math.random() * ((wherePlayerCanGo.size() - 2) + 1)) + 2;
-        PairEffector choice = null;
+    private PairEffector checkEffects(ArrayList<Effector> wherePlayerCanGo) {
+        int rand = (int) (Math.random() * ((wherePlayerCanGo.size() - 1) + 1));
+        if (rand < 0)
+            rand = 0;
+        PairEffector choice;
 
         if (this.effects.size() == 0) {
             choice = new PairEffector(wherePlayerCanGo.get(rand));
@@ -132,25 +122,25 @@ public class Player {
                     }
                 }
             }
-            choice = new PairEffector(wherePlayerCanGo.get(rand - 1));
+            choice = new PairEffector(wherePlayerCanGo.get(rand));
             this.shot.clear();
         }
         return choice;
     }
 
-    private PairEffector filterRules(ArrayList<Environment.Forest.State> states, ArrayList<Effector> wherePlayerCanGo) {
+    private PairEffector filterRules(ArrayList<Effector> wherePlayerCanGo) {
         PairEffector event = checkEvents();
 
         if (event != null) {
             return event;
         } else {
-            return checkEffects(states, wherePlayerCanGo);
+            return checkEffects(wherePlayerCanGo);
         }
     }
 
     private PairEffector inferenceEngine(ArrayList<Environment.Forest.State> states, ArrayList<Effector> wherePlayerCanGo) {
         buildKnowledge(states);
-        return filterRules(states, wherePlayerCanGo);
+        return filterRules(wherePlayerCanGo);
     }
 
     private PairEffector choiceWithProba(ArrayList<Environment.Forest.State> states, ArrayList<Effector> wherePlayerCanGo) {

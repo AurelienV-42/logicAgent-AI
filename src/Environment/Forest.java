@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Forest {
-    public enum State {Character, Smell, Wind, Light, Monster, Portal, Rift, Clear} // TODO Supprimer Clear
+    public enum State {Character, Smell, Wind, Light, Monster, Portal, Rift}
 
     Scanner input;
     private ArrayList<ArrayList<ArrayList<State>>> map;
