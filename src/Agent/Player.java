@@ -46,18 +46,20 @@ public class Player {
         this.agentMeasurement.put(Effector.Bottom, -1);
         this.agentMeasurement.put(Effector.Left, -1);
         this.agentMeasurement.put(Effector.Shoot, -10);
-        this.agentMeasurement.put(Effector.Leave, 10 * 3);
-        this.agentMeasurement.put(Effector.Death, -10 * 3);
+
         this.eventMeasurement.put(Forest.State.Monster, Effector.Death);
         this.eventMeasurement.put(Forest.State.Rift, Effector.Death);
         this.eventMeasurement.put(Forest.State.Portal, Effector.Leave);
+
         this.directions.put("A", Effector.Top);
         this.directions.put("B", Effector.Right);
         this.directions.put("C", Effector.Bottom);
         this.directions.put("D", Effector.Left);
+
         this.basicKnowledge.put(Forest.State.Smell, Forest.State.Monster);
         this.basicKnowledge.put(Forest.State.Light, Forest.State.Portal);
         this.basicKnowledge.put(Forest.State.Wind, Forest.State.Rift);
+
         this.volatileKnowledge.put("A", null);
         this.volatileKnowledge.put("B", null);
         this.volatileKnowledge.put("C", null);
@@ -79,7 +81,7 @@ public class Player {
                 } else if (choice.effector == Effector.Death) {
                     System.out.println("Score de performance pour cet environnement : " + this.performanceScore);
                     System.out.println("Score moyen de performance : " + this.averagePerf);
-                    System.out.println("Score total de performance pour cet environnement : " + this.totalScore);
+                    System.out.println("Score total de performance : " + this.totalScore);
                     System.out.println("Nombre d'itérations : " + this.iteration);
                 }
             }
@@ -148,7 +150,7 @@ public class Player {
                     }
                 }
             }
-            choice = new PairEffector(wherePlayerCanGo.get(rand));
+            choice = new PairEffector(wherePlayerCanGo.get(rand - 1));
             this.shot.clear();
         }
         return choice;
@@ -180,6 +182,9 @@ public class Player {
         System.out.println("[Player] I receive: " + states);
 
         PairEffector returnValue;
+
+        this.agentMeasurement.put(Effector.Leave, 10 * mapSize);
+        this.agentMeasurement.put(Effector.Death, -10 * mapSize);
 
         returnValue = choiceWithProba(states, wherePlayerCanGo);
 
