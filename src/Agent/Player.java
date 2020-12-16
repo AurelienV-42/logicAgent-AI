@@ -15,7 +15,6 @@ public class Player {
     private final Map<Forest.State, Effector> eventMeasurement;
     private final Map<String, Effector> directions;
     final private Map<Forest.State, Forest.State> basicKnowledge;
-    private final Map<String, Forest.State> volatileKnowledge;
     private final ArrayList<Forest.State> events;
     private final ArrayList<Forest.State> effects;
     private int numberOfStates = 0;
@@ -36,7 +35,6 @@ public class Player {
         this.eventMeasurement = new HashMap<>();
         this.directions = new HashMap<>();
         this.basicKnowledge = new HashMap<>();
-        this.volatileKnowledge = new HashMap<>();
         this.events = new ArrayList<>();
         this.effects = new ArrayList<>();
         this.shot = new ArrayList<>();
@@ -59,11 +57,6 @@ public class Player {
         this.basicKnowledge.put(Forest.State.Smell, Forest.State.Monster);
         this.basicKnowledge.put(Forest.State.Light, Forest.State.Portal);
         this.basicKnowledge.put(Forest.State.Wind, Forest.State.Rift);
-
-        this.volatileKnowledge.put("A", null);
-        this.volatileKnowledge.put("B", null);
-        this.volatileKnowledge.put("C", null);
-        this.volatileKnowledge.put("D", null);
     }
 
     private void measurePerf(PairEffector choice) {
@@ -102,17 +95,6 @@ public class Player {
         }
         this.numberOfStates = events.size() + effects.size();
     }
-
-    private void updateKnowledge() {
-        for (String dir : this.directions.keySet()) {
-            if (this.choiceDir != null) {
-                if (this.choiceDir.effector == this.directions.get(dir)) {
-                    System.out.println("Direction choice : " + dir + " Assumption : " + this.directions.get(dir));
-                    this.volatileKnowledge.put(dir, Forest.State.Clear);
-                }
-            }
-        }
-    } // TODO Maybe on n'en a pas besoin
 
     private PairEffector checkEvents() {
         if (this.events.size() > 0) {
@@ -168,7 +150,6 @@ public class Player {
 
     private PairEffector inferenceEngine(ArrayList<Environment.Forest.State> states, ArrayList<Effector> wherePlayerCanGo) {
         buildKnowledge(states);
-        updateKnowledge();
         return filterRules(states, wherePlayerCanGo);
     }
 
