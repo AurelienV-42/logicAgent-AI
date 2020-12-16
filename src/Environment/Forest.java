@@ -1,7 +1,6 @@
 package Environment;
 
 import Agent.Player;
-import com.sun.jdi.event.StepEvent;
 import utils.Pair;
 import utils.PairEffector;
 
@@ -34,12 +33,12 @@ public class Forest {
 
         while (!lose) {
             Pair coords = getWherePlayerIs();
-            ArrayList<Player.Effector> wherePlayerCanGo = getWherePlayerCanGo();
+            ArrayList<Player.Effector> wherePlayerCanGo = getWherePlayerCanGo(coords);
 
             System.out.print("Press enter to continue");
             input.nextLine();
 
-            PairEffector thePlay = player.play(map.get(Objects.requireNonNull(coords).x).get(coords.y), wherePlayerCanGo);
+            PairEffector thePlay = player.play(map.get(Objects.requireNonNull(coords).x).get(coords.y), wherePlayerCanGo, map.size());
             lose = updateTheMap(thePlay, coords);
             System.out.println();
             displayMap();
@@ -47,12 +46,17 @@ public class Forest {
         System.out.println("You did a mistake... :(");
     }
 
-    private ArrayList<Player.Effector> getWherePlayerCanGo() {
+    private ArrayList<Player.Effector> getWherePlayerCanGo(Pair coords) {
         ArrayList<Player.Effector> result = new ArrayList<>();
-        result.add(Player.Effector.Top);
-        result.add(Player.Effector.Bottom);
-        result.add(Player.Effector.Right);
-        result.add(Player.Effector.Left);
+
+        if (coords.x > 0)
+            result.add(Player.Effector.Top);
+        if (coords.x < map.size() - 1)
+            result.add(Player.Effector.Bottom);
+        if (coords.y < map.size() - 1)
+            result.add(Player.Effector.Right);
+        if (coords.y > 0)
+            result.add(Player.Effector.Left);
         return result;
     }
 

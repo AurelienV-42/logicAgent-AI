@@ -176,7 +176,7 @@ public class Player {
         return choice;
     }
 
-    public PairEffector play(ArrayList<Forest.State> states, ArrayList<Effector> wherePlayerCanGo) {
+    public PairEffector play(ArrayList<Forest.State> states, ArrayList<Effector> wherePlayerCanGo, int mapSize) {
         System.out.println("[Player] I receive: " + states);
 
         PairEffector returnValue;
