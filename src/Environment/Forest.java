@@ -243,6 +243,8 @@ public class Forest {
                     upgradeMap();
                     return false;
                 }
+            case Death:
+                return true;
             default:
                 return travel(thePlay.effector, coords);
         }
